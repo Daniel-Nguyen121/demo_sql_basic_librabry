@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Movie</title>
+</head>
+<body>
+    <h1>Search Movie</h1>
+    <form id="api-form">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+
+        <label for="keyword">Keyword:</label><br>
+        <input type="text" id="keyword" name="keyword"><br>
+
+        <label for="year_min">Year Min:</label><br>
+        <input type="text" id="year_min" name="year_min"><br>
+
+        <label for="year_max">Year Max:</label><br>
+        <input type="text" id="year_max" name="year_max"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <p id="notice"></p>
+
+    <script>
+        document.getElementById('api-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var data = {
+                title: document.getElementById('title').value,
+                keyword: document.getElementById('keyword').value,
+                year_min: document.getElementById('year_min').value,
+                year_max: document.getElementById('year_max').value
+            };
+
+            fetch('http://127.0.0.1:5000/movie/search/', {
+                method: 'GET',
+                // headers: {
+                //     'Content-Type': 'application/json'
+                // },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('notice').innerHTML = 'Search executed successfully';
+                } else {
+                    document.getElementById('notice').innerHTML = 'Failed to execute search';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('notice').innerHTML = 'Error in fetch operation';
+            });
+        });
+    </script>
+</body>
+</html>

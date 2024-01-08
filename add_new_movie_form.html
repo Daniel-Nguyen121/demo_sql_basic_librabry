@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a movie</title>
+</head>
+<body>
+    <h1>Create a movie</h1>
+    <form id="movieForm">
+        <label for="id_company">Company ID:</label>
+        <input type="text" id="id_company" name="id_company" required>
+        <br>
+        <label for="id_movie">ID:</label>
+        <input type="text" id="id_movie" name="id_movie" required>
+        <br>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year" required>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        document.getElementById('movieForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(event.target);
+            var data = Object.fromEntries(formData.entries());
+
+            fetch('http://localhost:5000/movie/', {
+                method: 'POST',
+                // headers: {
+                //     'Content-Type': 'application/json'
+                // },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
